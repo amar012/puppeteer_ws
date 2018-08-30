@@ -1,0 +1,28 @@
+{
+  "name": "puppeteer_ws",
+  "version": "1.0.0",
+  "description": "web scraping using puppeteer",
+  "main": "index.js",
+  "scripts": {
+    "run": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amar2012/puppeteer_ws.git"
+  },
+  "keywords": [
+    "puppeteer",
+    "web-scarping",
+    "scraping",
+    "web"
+  ],
+  "author": "Amar",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/amar2012/puppeteer_ws/issues"
+  },
+  "homepage": "https://github.com/amar2012/puppeteer_ws#readme",
+  "dependencies": {
+    "puppeteer": "^1.7.0"
+  }
+}
