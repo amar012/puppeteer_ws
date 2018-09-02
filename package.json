@@ -17,7 +17,7 @@
     "web"
   ],
   "author": "Amar",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/amar2012/puppeteer_ws/issues"
   },
