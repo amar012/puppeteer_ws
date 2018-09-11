@@ -8,7 +8,8 @@ const def_config = {
 		    }
 puppeteer.defaultArgs(def_config);
 
-const URL = 'https://github.com';
+const URL = 'https://www.nseindia.com/corporates/corpInfo/equities/FinancialResults.html?radio_btn=&param=';
+// 'https://github.com';
 // https://www.nseindia.com/corporates/corpInfo/equities/getFinancialResults.jsp?symbol=&industry=&period=&broadcastPeriod=Latest%20Announced
 // https://www.nseindia.com/corporates/json/IndustryList.json
 
@@ -16,6 +17,71 @@ const URL = 'https://github.com';
    included in the comments above (which uses this url in its XHR calls:
 
 	https://www.nseindia.com/corporates/corpInfo/equities/FinancialResults.html?radio_btn=&param=
+		var store = new Ext.data.JsonStore({
+			//url: '/marketinfo/companyinfo/getBoardMeetings.jsp',
+			//url: '/js/data.json',
+			//url: '/corporates/json/corpInfo/LatestFinancialResults.json',
+			proxy: new Ext.data.HttpProxy({url: '/corporates/corpInfo/equities/getFinancialResults.jsp', method: 'GET'}),
+			//url: '/corporates/corpInfo/equities/getFinancialResults.jsp',
+			fields: [{name:'Symbol'},{name:'CompanyName'},{name:'ISIN'}, {name:'Ind'},{name:'Audited'},{name:'Cumulative'},{name:'Consolidated'},{name:'IND_AS'},{name:'Period'},{name:'RelatingTo'},{name:'FinancialYear'},{name:'FilingDate', type:'date', dateFormat: 'd-M-Y H:i'}, {name:'SeqNumber'},{name:'Bank'},{name:'FromDate'},{name:'ToDate'},{name:'fr_oldNewFlag'},{name:'xbrl'},{name:'Format'}],
+			root: 'rows',
+			totalProperty : 'results'
+		});	
+
+	https://www.nseindia.com/corporates/corpInfo/equities/results_Nxbrl.jsp?param=01-Apr-201730-Jun-2017Q1UNNCNEONELIFECAP&seq_id=1049239&industry=-&viewFlag=N&frOldNewFlag=N
+	https://www.nseindia.com/corporates/corpInfo/equities/results_Nxbrl.jsp?param=01-Apr-201730-Jun-2017Q1UNNCNEONELIFECAP&seq_id=1049239&industry=-&viewFlag=N&frOldNewFlag=N
+	https://www.nseindia.com/corporates/corpInfo/equities/results_Nxbrl.jsp?param=01-Apr-201830-Jun-2018Q1UNNNNEKRIDHANINF&seq_id=1049232&industry=-&viewFlag=N&frOldNewFlag=N
+	https://www.nseindia.com/corporates/corpInfo/equities/results_Nxbrl.jsp?param=01-Apr-201731-Mar-2018ANANCNNEAEGISCHEM&seq_id=1049472&industry=-&viewFlag=N&frOldNewFlag=N
+	
+	https://www.nseindia.com/corporates/corpInfo/equities/results_Nxbrl.jsp?param=01-Apr-201731-Mar-2018ANANCNNEAEGISCHEM&seq_id=1049472&industry=-&viewFlag=N&xbrl:"INDAS_39069_35587_14082018110128_WEB.xml"
+
+	{ Symbol:"SUVEN",
+	  CompanyName:"Suven Life Sciences Limited",
+	  ISIN:"INE495B01038",
+	  Ind:"-",
+	  Audited:"Un-Audited",
+	  Cumulative:"Non-cumulative",
+	  Consolidated:"Non-Consolidated",
+    	  IND_AS:"Ind-AS New",
+	  Period:"Quarterly",
+	  RelatingTo:"First Quarter",
+	  FinancialYear:"01-Apr-2018 To 31-Mar-2019",
+	  FilingDate:"03-Sep-2018 13:23",
+	  SeqNumber:"1049236",
+	  Bank:"N",
+	  FromDate:"01-Apr-2018",ToDate:"30-Jun-2018",
+	  fr_oldNewFlag:"N",
+	  xbrl:"INDAS_39069_35587_14082018110128_WEB.xml",
+	  Format:"New"}
+
+	URL for downloading xbrl files is https://www.nseindia.com/corporate/xbrl to which the "xbrl" value 
+	from json data got from url "https://www.nseindia.com/corporates/corpInfo/equities/getFinancialResults.jsp", is to be suffixed
+	for example the following is the url for downlaoding xbrl file for SUVEN (Suven life Sciences Ltd)
+	https://www.nseindia.com/corporate/xbrl/INDAS_39069_35587_14082018110128_WEB.xml
+
+	{ Symbol:"ONELIFECAP",
+	  CompanyName:"Onelife Capital Advisors Limited",
+	  ISIN:"INE912L01015",
+	  Ind:"-",
+	  Audited:"Un-Audited",
+	  Cumulative:"Non-cumulative",
+	  Consolidated:"Consolidated",
+	  IND_AS:"Ind-AS New",
+	  Period:"Quarterly",
+	  RelatingTo:"First Quarter",
+	  FinancialYear:"01-Apr-2017 To 31-Mar-2018",
+	  FilingDate:"03-Sep-2018 13:28",
+	  SeqNumber:"1049239",Bank:"N",
+	  FromDate:"01-Apr-2017",
+	  ToDate:"30-Jun-2017",
+	  fr_oldNewFlag:"N",
+	  xbrl:"-",
+	  Format:"New"}
+
+	URL for getting the results history of any equity the 'SYMBOL' value got from url "https://www.nseindia.com/corporates/corpInfo/equities/getFinancialResults.jsp"
+	is to be suffixed to this URL "https://www.nseindia.com//corporates/corpInfo/equities/resHistory.jsp?symbol="
+	For example, the following is the URL for getting the results histroy of ONELIFECAP (Onelife Capital Advisers Limited):
+		https://www.nseindia.com//corporates/corpInfo/equities/resHistory.jsp?symbol=ONELIFECAP
 
 	when the next button is clicked the following url fetches the results, however these return bare json data, without clickable links and without xbrl data:
 	https://www.nseindia.com/corporates/corpInfo/equities/getFinancialResults.jsp?start=20&limit=20&symbol=&industry=&period=&broadcastPeriod=Latest%20Announced
@@ -159,7 +225,7 @@ async function run() {
 	//await get_members(await browser.targets(), "browser.targets");
 	console.log("The length of 'browser.targets' array is :", await browser.targets().length, "\n");
 
-	/* This needs to be uncommented after above portion is working properly
+	// This needs to be uncommented after above portion is working properly
 		const targets = await browser.targets();
 		for (let tgt of targets) {
 			console.log("target url is :", await tgt.url(), "\n");
@@ -181,7 +247,7 @@ async function run() {
 					.catch(err => console.log('Error in "tgt.page()" : ', err));
 			}
 		}
-	*/
+	
 	await page.waitFor(2400000);
 	console.log('Closing the browser');
 	await browser.close();
