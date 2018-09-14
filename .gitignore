@@ -13,7 +13,11 @@ getFinancialResults.jon
 IndustryList.json
 LatestFinancialResults.json
 
+NSEfinancialResults20To1260_last3months.json
+NSE_fin_results_6651_last3mons.json
+nse_urls.txt
+
 results_history/
 theme.js
 
-xbrl_folder/
+xbrl_folder*/

@@ -10,13 +10,14 @@ const CHROME_USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit
 // Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:61.0) Gecko/20100101 Firefox/61.0
 const FIREFOX_USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:61.0) Gecko/20100101 Firefox/61.0';
 
-const URL='https://github.com';
+// get last 3 months financial results data from nse with following url
+const URL='https://www.nseindia.com/corporates/corpInfo/equities/getFinancialResults.jsp?symbol=&industry=&period=&broadcastPeriod=Last%203%20Months';
 
-puppeteer.launch({headless: true, timeout: 60000})
+puppeteer.launch({headless: true, timeout: 180000})
 						.then(async browser => {
 							const page = await browser.newPage();
 							await page.setUserAgent(FIREFOX_USER_AGENT);
-							await page.goto(URL);
+							await page.goto(URL, {tiemout: 180000});
 
 							await printPageContent(page);
 							await page.on('request', printReqDetails);
@@ -32,5 +33,8 @@ puppeteer.launch({headless: true, timeout: 60000})
 										.catch(e => console.log('Error in "page.waitFor()" :' + e + '\n'));
 							
 						})
-						.catch(e => console.log('Error in "puppeteer.launch()" :' + e + '\n'));
+						.catch(async e => { 
+								console.log('Error in "puppeteer.launch()" :' + e + '\n')
+								await browser.close().catch(e => console.log('Error in overall catch block "browser.close()" :' + e + '\n'));
+								});
 
