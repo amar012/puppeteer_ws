@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/amar2012/puppeteer_ws#readme",
   "dependencies": {
-    "puppeteer": "^1.7.0"
+    "puppeteer": "^1.7.0",
+    "xml2js": "^0.4.19"
   }
 }
